@@ -1,103 +1,96 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [count, setCount] = useState(0);
+  const [inputText, setInputText] = useState("");
+  const [todos, setTodos] = useState([]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const addTodo = () => {
+    if (inputText.trim()) {
+      setTodos([...todos, inputText.trim()]);
+      setInputText("");
+    }
+  };
+
+  const removeTodo = (index) => {
+    setTodos(todos.filter((_, i) => i !== index));
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+        <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
+          Simple Testing App
+        </h1>
+
+        {/* Counter Section */}
+        <div className="mb-6 p-4 bg-blue-50 rounded-lg">
+          <h2 className="text-lg font-semibold mb-2">Counter Test</h2>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setCount(count - 1)}
+              className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+            >
+              -
+            </button>
+            <span className="text-xl font-bold">{count}</span>
+            <button
+              onClick={() => setCount(count + 1)}
+              className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+            >
+              +
+            </button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Todo Section */}
+        <div className="mb-6 p-4 bg-green-50 rounded-lg">
+          <h2 className="text-lg font-semibold mb-2">Todo Test</h2>
+          <div className="flex gap-2 mb-3">
+            <input
+              type="text"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              placeholder="Enter todo..."
+              className="flex-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onKeyPress={(e) => e.key === "Enter" && addTodo()}
+            />
+            <button
+              onClick={addTodo}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Add
+            </button>
+          </div>
+          <ul className="space-y-2">
+            {todos.map((todo, index) => (
+              <li
+                key={index}
+                className="flex items-center justify-between p-2 bg-white rounded border"
+              >
+                <span>{todo}</span>
+                <button
+                  onClick={() => removeTodo(index)}
+                  className="px-2 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
+                >
+                  ×
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Status Section */}
+        <div className="p-4 bg-yellow-50 rounded-lg">
+          <h2 className="text-lg font-semibold mb-2">App Status</h2>
+          <p className="text-sm text-gray-600">
+            Counter: {count} | Todos: {todos.length}
+          </p>
+          <p className="text-xs text-gray-500 mt-1">Ready for testing! 🚀</p>
+        </div>
+      </div>
     </div>
   );
 }
